@@ -1,0 +1,128 @@
+{
+  "name": "Data Processing Pipeline",
+  "description": "Processes CSV data and triggers notifications",
+  "version": "1.0.0",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1"
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Weekly Data Sync",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/codeblazar/singapling/main/documents/SingaPlingPlanDetails.csv",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "fetch-plan-data",
+      "name": "Fetch Plan Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse CSV data\nconst csvData = $json.data;\nconst lines = csvData.split('\\n').filter(line => line.trim());\nconst headers = lines[0].split(',');\n\nconst plans = [];\nfor (let i = 1; i < lines.length; i++) {\n  const values = lines[i].split(',');\n  if (values.length === headers.length) {\n    const plan = {};\n    headers.forEach((header, index) => {\n      plan[header.trim()] = values[index].trim();\n    });\n    plans.push(plan);\n  }\n}\n\n// Analyze for changes or trends\nconst analysis = {\n  totalPlans: plans.length,\n  mobileCount: plans.filter(p => p['Service Type'] === 'Mobile').length,\n  broadbandCount: plans.filter(p => p['Service Type'] === 'Broadband').length,\n  averagePrice: plans.reduce((sum, p) => sum + parseFloat(p.Price || 0), 0) / plans.length,\n  priceRange: {\n    min: Math.min(...plans.map(p => parseFloat(p.Price || 0))),\n    max: Math.max(...plans.map(p => parseFloat(p.Price || 0)))\n  }\n};\n\nreturn {\n  plans,\n  analysis,\n  timestamp: new Date().toISOString()\n};"
+      },
+      "id": "process-data",
+      "name": "Process Plan Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.analysis.totalPlans }}",
+              "operation": "notEqual",
+              "value2": 17
+            }
+          ]
+        }
+      },
+      "id": "check-changes",
+      "name": "Check for Changes",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate notification content\nconst analysis = $json.analysis;\n\nconst notification = {\n  title: '📊 Singapling Plan Data Update',\n  message: `\n🔍 **Data Analysis Summary**\n\n📱 Total Plans: ${analysis.totalPlans}\n📶 Mobile Plans: ${analysis.mobileCount}\n🌐 Broadband Plans: ${analysis.broadbandCount}\n💰 Average Price: $${analysis.averagePrice.toFixed(2)}\n📈 Price Range: $${analysis.priceRange.min} - $${analysis.priceRange.max}\n\n⏰ Last Updated: ${new Date().toLocaleString()}\n`,\n  timestamp: new Date().toISOString()\n};\n\nreturn notification;"
+      },
+      "id": "generate-notification",
+      "name": "Generate Notification",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 200]
+    }
+  ],
+  "connections": {
+    "Weekly Data Sync": {
+      "main": [
+        [
+          {
+            "node": "Fetch Plan Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Plan Data": {
+      "main": [
+        [
+          {
+            "node": "Process Plan Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Plan Data": {
+      "main": [
+        [
+          {
+            "node": "Check for Changes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check for Changes": {
+      "main": [
+        [
+          {
+            "node": "Generate Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

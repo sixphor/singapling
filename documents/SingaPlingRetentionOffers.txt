@@ -1,0 +1,28 @@
+SINGAPLING RETENTION OFFERS
+==================================================
+
+Offer 1:
+  Code: LOY10GB
+  Description: 10 GB bonus local data (valid 30 days)
+  Eligibility: Customer > 6 months tenure AND negative sentiment about price
+--------------------------------------------------
+Offer 2:
+  Code: DISC20
+  Description: 20 % monthly‑fee discount for 3 billing cycles
+  Eligibility: High churn risk OR user mentions switching/cancelling
+--------------------------------------------------
+Offer 3:
+  Code: EXPCARE
+  Description: Free upgrade to Express Customer Care for 6 months
+  Eligibility: Persistent service‑quality complaints
+--------------------------------------------------
+Offer 4:
+  Code: ROAMDAY
+  Description: Free 1‑day Asia roaming pass
+  Eligibility: User with upcoming travel, competitor comparison, or roaming concern
+--------------------------------------------------
+Offer 5:
+  Code: LOYVOICE
+  Description: 100 free local voice minutes add‑on for 1 month
+  Eligibility: Long‑tenure customer, neutral sentiment, but at‑risk keyword present
+--------------------------------------------------

@@ -1,0 +1,6 @@
+OfferCode,Description,Eligibility
+LOY10GB,10 GB bonus local data (valid 30 days),Customer > 6 months tenure AND negative sentiment about price
+DISC20,20 % monthly‑fee discount for 3 billing cycles,High churn risk OR user mentions switching/cancelling
+EXPCARE,Free upgrade to Express Customer Care for 6 months,Persistent service‑quality complaints
+ROAMDAY,Free 1‑day Asia roaming pass,"User with upcoming travel, competitor comparison, or roaming concern"
+LOYVOICE,100 free local voice minutes add‑on for 1 month,"Long‑tenure customer, neutral sentiment, but at‑risk keyword present"

@@ -1,0 +1,221 @@
+/*
+Singapling Website
+Modern, Gen Z-focused static site for a fake Singapore telco.
+Pages: Home, FAQ, Pricing
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #f9fafc 0%, #e0e7ff 100%);
+  color: #222;
+  min-height: 100vh;
+  overflow-y: scroll;
+}
+
+header {
+  background: linear-gradient(90deg, #7f5af0 0%, #2cb67d 100%);
+  color: #fff;
+  padding: 2rem 1rem 1rem 1rem;
+  text-align: center;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  box-shadow: 0 4px 24px rgba(127,90,240,0.08);
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+
+nav a:hover {
+  color: #ff8906;
+}
+
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 16px rgba(44,182,125,0.07);
+  padding: 2rem;
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', 'Inter', Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.faq-item {
+  margin-bottom: 1.5rem;
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+.pricing-table th, .pricing-table td {
+  border: 1px solid #e0e7ff;
+  padding: 1rem;
+  text-align: left;
+}
+
+.pricing-table th {
+  background: #f3f4f6;
+  color: #7f5af0;
+}
+
+.pricing-table tr:nth-child(even) {
+  background: #f9fafc;
+}
+
+.badge {
+  display: inline-block;
+  background: #2cb67d;
+  color: #fff;
+  border-radius: 1rem;
+  padding: 0.2rem 0.8rem;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+footer {
+  text-align: center;
+  color: #888;
+  margin: 3rem 0 2rem 0;
+  font-size: 0.95rem;
+}
+
+.chat-msg {
+  margin-bottom: 0.7rem;
+  padding: 0.7rem 1rem;
+  border-radius: 1.2rem 1.2rem 1.2rem 0.4rem;
+  max-width: 90%;
+  word-break: break-word;
+  font-size: 1.08rem;
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #e0e7ff;
+  align-self: flex-start;
+  text-align: left;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  box-shadow: 0 2px 8px rgba(127,90,240,0.07);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.chat-msg.user {
+  background: linear-gradient(90deg, #e0e7ff 60%, #7f5af0 100%);
+  color: #222;
+  align-self: flex-end;
+  text-align: right;
+  border-radius: 1.2rem 1.2rem 0.4rem 1.2rem;
+  border: none;
+  box-shadow: 0 2px 8px rgba(44,182,125,0.08);
+}
+.chat-msg.bot {
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #e0e7ff;
+  align-self: flex-start;
+  text-align: left;
+  border-radius: 1.2rem 1.2rem 1.2rem 0.4rem;
+  box-shadow: 0 2px 8px rgba(127,90,240,0.07);
+}
+.chat-table {
+  border-collapse: collapse;
+  margin: 0.7rem 0;
+  width: 100%;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px #e0e7ff33;
+}
+.chat-table th, .chat-table td {
+  border: 1px solid #e0e7ff;
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+.chat-table th {
+  background: #f3f4f6;
+  color: #7f5af0;
+  font-weight: bold;
+}
+.chat-table tr:nth-child(even) {
+  background: #f9fafc;
+}
+/* Add markdown styling for code, bold, italics */
+.chat-msg b { font-weight: bold; }
+.chat-msg i { font-style: italic; }
+.chat-msg code {
+  background: #f3f4f6;
+  color: #7f5af0;
+  padding: 0.1em 0.4em;
+  border-radius: 0.3em;
+  font-size: 0.98em;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+}
+
+.chatbot-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px #7f5af033;
+  margin-right: 0.7rem;
+}
+
+#chat-input {
+  font-size: 1.08rem;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+#chatbot-section {
+  max-width: 700px !important;
+  min-width: 0;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  background: #f9fafc;
+  padding: 1.5rem 1rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px #7f5af022;
+}
+
+@media (max-width: 900px) {
+  #chatbot-section {
+    max-width: 98vw !important;
+    padding: 1.2rem 0.3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 1rem;
+  }
+  header {
+    padding: 1.2rem 0.5rem 0.7rem 0.5rem;
+  }
+  nav {
+    gap: 1rem;
+  }
+}

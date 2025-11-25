@@ -1,0 +1,18 @@
+,Plan,Price,Data,Service Type,Speed
+0,Singa Basic Plan,25,25GB,Mobile,4G
+1,Singa Plus Plan,35,50GB,Mobile,4G
+2,Singa Premium Plan,55,75GB,Mobile,5G
+3,Singa Family Plan,80,150GB,Mobile,5G
+4,Fiber Home 500,39.9,Unlimited,Broadband,Up to 500 Mbps
+5,Fiber Home 1G,49.9,Unlimited,Broadband,Up to 1 Gbps
+6,Fiber Home 1G Plus,59.9,Unlimited,Broadband,Up to 1 Gbps + Mesh Wi-Fi
+7,Wireless Home Basic,35,Unlimited,Broadband,Up to 50 Mbps
+8,Roaming Zone A - 2GB (3 days),15,5GB,Mobile,4G
+9,Roaming Zone A - 5GB (7 days),30,8GB,Mobile,4G
+10,Roaming Zone B - 1GB (3 days),25,5GB,Mobile,4G
+11,Roaming Zone B - 3GB (7 days),45,8GB,Mobile,4G
+12,Bundle: Fiber Home 1G + Singa Plus + TV Basic,120,Unlimited,Mobile,4G
+13,Fiber Home 1G,49.9,Unlimited,Broadband,Up to 1 Gbps
+14,Fiber Home 1G Plus,59.9,Unlimited,Broadband,Up to 1 Gbps + Mesh Wi-Fi
+15,TV Basic,19.9,Unlimited,TV,N/A
+16,Bundle: Fiber Home 1G + Singa Plus + TV Basic,89.9,Unlimited,Bundle,"1 Gbps broadband, 4G/5G mobile, TV"

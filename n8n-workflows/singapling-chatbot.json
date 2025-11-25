@@ -1,0 +1,72 @@
+{
+  "name": "Singapling Chatbot Workflow",
+  "description": "n8n workflow for handling Singapling chatbot interactions",
+  "version": "1.0.0",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chatbot",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*",
+          "rawBody": false
+        }
+      },
+      "id": "webhook-node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "singapling-chatbot"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract user question from webhook data\nconst userQuestion = $json.question || $json.body?.question || '';\n\n// Load knowledge base data\nconst planDetails = [\n  { name: 'Singa Basic Plan', price: 25, data: '25GB', type: 'Mobile', speed: '4G' },\n  { name: 'Singa Plus Plan', price: 35, data: '50GB', type: 'Mobile', speed: '4G' },\n  { name: 'Singa Premium Plan', price: 55, data: '75GB', type: 'Mobile', speed: '5G' },\n  { name: 'Singa Family Plan', price: 80, data: '150GB', type: 'Mobile', speed: '5G' },\n  { name: 'Fiber Home 500', price: 39.9, data: 'Unlimited', type: 'Broadband', speed: 'Up to 500 Mbps' },\n  { name: 'Fiber Home 1G', price: 49.9, data: 'Unlimited', type: 'Broadband', speed: 'Up to 1 Gbps' }\n];\n\nconst retentionOffers = [\n  { code: 'LOY10GB', description: '10 GB bonus local data (valid 30 days)', eligibility: 'Customer > 6 months tenure AND negative sentiment about price' },\n  { code: 'DISC20', description: '20% monthly-fee discount for 3 billing cycles', eligibility: 'High churn risk OR user mentions switching/cancelling' },\n  { code: 'EXPCARE', description: 'Free upgrade to Express Customer Care for 6 months', eligibility: 'Persistent service-quality complaints' },\n  { code: 'ROAMDAY', description: 'Free 1-day Asia roaming pass', eligibility: 'User with upcoming travel, competitor comparison, or roaming concern' },\n  { code: 'LOYVOICE', description: '100 free local voice minutes add-on for 1 month', eligibility: 'Long-tenure customer, neutral sentiment, but at-risk keyword present' }\n];\n\n// Simple keyword-based response logic\nfunction generateResponse(question) {\n  const q = question.toLowerCase();\n  \n  // Plan-related queries\n  if (q.includes('plan') || q.includes('price') || q.includes('cost')) {\n    let response = '🔥 **Our Awesome Plans:**\\n\\n';\n    planDetails.forEach(plan => {\n      response += `**${plan.name}** - $${plan.price}/month\\n`;\n      response += `📱 ${plan.data} | ${plan.speed} ${plan.type}\\n\\n`;\n    });\n    response += 'Which plan sounds perfect for you? 😎';\n    return response;\n  }\n  \n  // Support/help queries\n  if (q.includes('help') || q.includes('support') || q.includes('contact')) {\n    return '💬 **Need Help?** We\\'re here 24/7!\\n\\n' +\n           '📞 Call: 1800-SINGA (1800-74642)\\n' +\n           '💬 Live Chat: Right here with me!\\n' +\n           '📧 Email: support@singapling.sg\\n\\n' +\n           'What can I help you with today? 🚀';\n  }\n  \n  // Retention/discount queries\n  if (q.includes('discount') || q.includes('offer') || q.includes('deal') || q.includes('cheaper')) {\n    let response = '🎁 **Special Offers Just For You:**\\n\\n';\n    retentionOffers.forEach(offer => {\n      response += `**${offer.code}**: ${offer.description}\\n`;\n    });\n    response += '\\nLet me check what offers you qualify for! 💯';\n    return response;\n  }\n  \n  // Coverage queries\n  if (q.includes('coverage') || q.includes('network') || q.includes('signal')) {\n    return '📶 **Island-Wide Coverage!**\\n\\n' +\n           '🟢 5G: 95% coverage across Singapore\\n' +\n           '🟢 4G: 99.9% coverage\\n' +\n           '🟢 Fiber: Available in 95% of homes\\n\\n' +\n           'Check our coverage map for your exact location! 🗺️';\n  }\n  \n  // Default response\n  return '👋 Hey there! I\\'m BotLah, your Singapling AI assistant! \\n\\n' +\n         'I can help you with:\\n' +\n         '📱 Plans & pricing\\n' +\n         '🎁 Special offers\\n' +\n         '📶 Network coverage\\n' +\n         '💬 Support & contact info\\n\\n' +\n         'What would you like to know? 🚀';\n}\n\nconst response = generateResponse(userQuestion);\n\nreturn {\n  text: response,\n  question: userQuestion,\n  timestamp: new Date().toISOString()\n};"
+      },
+      "id": "process-question",
+      "name": "Process Question",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"text\": $json.text, \"success\": true } }}"
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Process Question",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Question": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

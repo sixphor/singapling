@@ -1,0 +1,138 @@
+{
+  "name": "Customer Service Automation",
+  "description": "Automates customer inquiries, ticket creation, and retention offers",
+  "version": "1.0.0",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "customer-service",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "webhook-customer",
+      "name": "Customer Service Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract customer data\nconst customerData = {\n  email: $json.email || '',\n  issue: $json.issue || '',\n  priority: $json.priority || 'medium',\n  customerType: $json.customerType || 'existing',\n  tenure: $json.tenure || 0,\n  sentiment: $json.sentiment || 'neutral'\n};\n\n// Determine routing based on issue type and priority\nlet routing = 'general';\nlet autoResponse = '';\nlet requiresHuman = false;\n\n// Issue classification\nif (customerData.issue.toLowerCase().includes('billing') || \n    customerData.issue.toLowerCase().includes('payment')) {\n  routing = 'billing';\n  autoResponse = 'Your billing inquiry has been received. Our billing team will respond within 2 hours.';\n} else if (customerData.issue.toLowerCase().includes('technical') || \n           customerData.issue.toLowerCase().includes('network') ||\n           customerData.issue.toLowerCase().includes('internet')) {\n  routing = 'technical';\n  autoResponse = 'Technical issue logged. Our tech team will investigate and respond within 4 hours.';\n  requiresHuman = true;\n} else if (customerData.issue.toLowerCase().includes('cancel') || \n           customerData.issue.toLowerCase().includes('terminate') ||\n           customerData.sentiment === 'negative') {\n  routing = 'retention';\n  autoResponse = 'We understand your concerns. A specialist will contact you within 1 hour with exclusive offers.';\n  requiresHuman = true;\n}\n\n// Generate ticket ID\nconst ticketId = 'SP' + Date.now().toString().slice(-8);\n\nreturn {\n  ticketId,\n  routing,\n  autoResponse,\n  requiresHuman,\n  customerData,\n  timestamp: new Date().toISOString()\n};"
+      },
+      "id": "classify-issue",
+      "name": "Classify Issue",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.routing }}",
+              "operation": "equal",
+              "value2": "retention"
+            }
+          ]
+        }
+      },
+      "id": "check-retention",
+      "name": "Check if Retention Case",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate retention offers based on customer profile\nconst customer = $json.customerData;\nconst offers = [];\n\n// Tenure-based offers\nif (customer.tenure > 12) {\n  offers.push({\n    code: 'LOY10GB',\n    description: '10 GB bonus data (valid 30 days)',\n    value: '$15 equivalent'\n  });\n}\n\n// Sentiment-based offers\nif (customer.sentiment === 'negative') {\n  offers.push({\n    code: 'DISC20',\n    description: '20% discount for 3 months',\n    value: 'Up to $45 savings'\n  });\n}\n\n// Service issue offers\nif (customer.issue.toLowerCase().includes('service')) {\n  offers.push({\n    code: 'EXPCARE',\n    description: 'Priority customer care for 6 months',\n    value: 'Premium support'\n  });\n}\n\nconst emailContent = `\nDear Valued Customer,\n\nWe've received your inquiry (Ticket: ${$json.ticketId}) and want to make things right.\n\nAs a gesture of goodwill, we're offering you:\n\n${offers.map(offer => \n  `🎁 **${offer.code}**: ${offer.description} (${offer.value})`\n).join('\\n')}\n\nA retention specialist will contact you within 1 hour to discuss these offers and address your concerns.\n\nBest regards,\nSingapling Customer Care Team\n`;\n\nreturn {\n  ...($json),\n  offers,\n  emailContent,\n  emailSubject: `Exclusive Offers for You - Ticket ${$json.ticketId}`\n};"
+      },
+      "id": "generate-retention-offers",
+      "name": "Generate Retention Offers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ticketId\": $json.ticketId, \"status\": \"created\", \"response\": $json.autoResponse, \"offers\": $json.offers || [] } }}"
+      },
+      "id": "respond-customer",
+      "name": "Respond to Customer",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ticketId\": $json.ticketId, \"status\": \"created\", \"response\": $json.autoResponse } }}"
+      },
+      "id": "respond-general",
+      "name": "Respond General",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 400]
+    }
+  ],
+  "connections": {
+    "Customer Service Webhook": {
+      "main": [
+        [
+          {
+            "node": "Classify Issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Issue": {
+      "main": [
+        [
+          {
+            "node": "Check if Retention Case",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Retention Case": {
+      "main": [
+        [
+          {
+            "node": "Generate Retention Offers",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond General",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Retention Offers": {
+      "main": [
+        [
+          {
+            "node": "Respond to Customer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

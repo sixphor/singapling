@@ -1,0 +1,122 @@
+SINGAPLING PLAN DETAILS
+==================================================
+
+Plan 1:
+  Name: Singa Basic Plan
+  Price: $25
+  Data: 25GB
+  Service Type: Mobile
+  Speed: 4G
+------------------------------
+Plan 2:
+  Name: Singa Plus Plan
+  Price: $35
+  Data: 50GB
+  Service Type: Mobile
+  Speed: 4G
+------------------------------
+Plan 3:
+  Name: Singa Premium Plan
+  Price: $55
+  Data: 75GB
+  Service Type: Mobile
+  Speed: 5G
+------------------------------
+Plan 4:
+  Name: Singa Family Plan
+  Price: $80
+  Data: 150GB
+  Service Type: Mobile
+  Speed: 5G
+------------------------------
+Plan 5:
+  Name: Fiber Home 500
+  Price: $39.9
+  Data: Unlimited
+  Service Type: Broadband
+  Speed: Up to 500 Mbps
+------------------------------
+Plan 6:
+  Name: Fiber Home 1G
+  Price: $49.9
+  Data: Unlimited
+  Service Type: Broadband
+  Speed: Up to 1 Gbps
+------------------------------
+Plan 7:
+  Name: Fiber Home 1G Plus
+  Price: $59.9
+  Data: Unlimited
+  Service Type: Broadband
+  Speed: Up to 1 Gbps + Mesh Wi-Fi
+------------------------------
+Plan 8:
+  Name: Wireless Home Basic
+  Price: $35
+  Data: Unlimited
+  Service Type: Broadband
+  Speed: Up to 50 Mbps
+------------------------------
+Plan 9:
+  Name: Roaming Zone A - 2GB (3 days)
+  Price: $15
+  Data: 5GB
+  Service Type: Mobile
+  Speed: 4G
+------------------------------
+Plan 10:
+  Name: Roaming Zone A - 5GB (7 days)
+  Price: $30
+  Data: 8GB
+  Service Type: Mobile
+  Speed: 4G
+------------------------------
+Plan 11:
+  Name: Roaming Zone B - 1GB (3 days)
+  Price: $25
+  Data: 5GB
+  Service Type: Mobile
+  Speed: 4G
+------------------------------
+Plan 12:
+  Name: Roaming Zone B - 3GB (7 days)
+  Price: $45
+  Data: 8GB
+  Service Type: Mobile
+  Speed: 4G
+------------------------------
+Plan 13:
+  Name: Bundle: Fiber Home 1G + Singa Plus + TV Basic
+  Price: $120
+  Data: Unlimited
+  Service Type: Mobile
+  Speed: 4G
+------------------------------
+Plan 14:
+  Name: Fiber Home 1G
+  Price: $49.9
+  Data: Unlimited
+  Service Type: Broadband
+  Speed: Up to 1 Gbps
+------------------------------
+Plan 15:
+  Name: Fiber Home 1G Plus
+  Price: $59.9
+  Data: Unlimited
+  Service Type: Broadband
+  Speed: Up to 1 Gbps + Mesh Wi-Fi
+------------------------------
+Plan 16:
+  Name: TV Basic
+  Price: $19.9
+  Data: Unlimited
+  Service Type: TV
+  Speed: N/A
+------------------------------
+Plan 17:
+  Name: Bundle: Fiber Home 1G + Singa Plus + TV Basic
+  Price: $89.9
+  Data: Unlimited
+  Service Type: Bundle
+  Speed: 1 Gbps broadband, 4G/5G mobile, TV
+------------------------------
